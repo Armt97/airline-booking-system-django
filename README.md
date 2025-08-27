@@ -11,6 +11,7 @@ python3 -m pip install -r requirements.txt
 cp .env.example .env   # then edit values
 python manage.py migrate
 python manage.py runserver
+```
 
 
 ## Environment Variables
