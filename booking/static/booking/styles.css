@@ -1,0 +1,148 @@
+/* Background and base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url("image1.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Page wrapper to center content */
+.page-content {
+    max-width: 800px;
+    margin: 50px auto 0 auto;  /* Leaves space under the fixed navbar */
+    padding: 40px;
+    border-radius: 12px;
+}
+
+/* Headings */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* Card styling */
+.card {
+    padding: 30px;
+    background: #f9f9f9cc;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+/* Form elements */
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select, button {
+    padding: 10px;
+    margin-top: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+.btn {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #1a252f;
+}
+
+
+/* Flight cards */
+.flight-card {
+    background: #f9f9f9cc;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 20px;
+    max-width: 600px;         /* Match the .card width */
+    margin-left: auto;        /* Center horizontally */
+    margin-right: auto;
+}
+
+/* Original Navbar styling */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: #2c3e50;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: white;
+    padding: 16px 24px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.navbar a:hover {
+    background-color: #1a252f;
+}
+
+body.bookings-page {
+    background: url("image2.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.results-header {
+    background: #f9f9f9cc;
+    padding: 15px 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.flight-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flight-form input,
+.flight-form button {
+    width: 300px;
+    max-width: 90%;
+    margin-top: 10px;
+}
+
+/* Specific background for the book flight page */
+.book-flight-page {
+    background: url("../booking/image4.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.confirmation-box {
+    background: #f9f9f9cc;
+    padding: 15px 30px;
+    margin-top: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+}
+
+
+

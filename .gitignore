@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+ENV/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Django
+*.sqlite3
+/media/
+staticfiles/
+.env
+
+# Archives
+*.zip
+*.tar
+*.gz
+*.tar.gz
+
+# Node (if any later)
+node_modules/
+dist/
+build/

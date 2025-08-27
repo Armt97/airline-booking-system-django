@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% load booking_extras %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'booking/styles.css' %}">
+
+<div class="page-content">
+    <h1>Welcome to Dairy Flat Airline Booking</h1>
+    <div class="card">
+        <h3>Search for a Flight</h3>
+        <form method="get">
+    <label for="start_date">From:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}" required>
+    <label for="end_date">To:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}" required>
+    <label for="from_airport">Flying From:</label>
+    <select id="from_airport" name="from_airport" required>
+        <option value="">-- Select Departure Airport --</option>
+        {% for code, name in airports %}
+            <option value="{{ code }}" {% if request.GET.from_airport == code %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="to_airport">Flying To:</label>
+    <select id="to_airport" name="to_airport" required>
+        <option value="">-- Select Destination Airport --</option>
+        {% for code, name in airports %}
+            <option value="{{ code }}" {% if request.GET.to_airport == code %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Search</button>
+</form>
+    </div>
+
+    {% if flights and request.GET.start_date and request.GET.end_date and request.GET.from_airport and request.GET.to_airport %}
+        <div class="results-wrapper">
+            {% for flight in flights %}
+                <div class="flight-card">
+                    <p><strong>{{ airport_names|get_item:flight.from_airport }} → {{ airport_names|get_item:flight.to_airport }}</strong></p>
+                    <p><strong>Date: </strong>{{ flight.date|date:"F j, Y" }}</p>
+                    <p>
+                        <strong>Departure:</strong> {{ flight.departure_time|time:"g:i a"|cut:"." }}
+                        {% if flight.is_international %}
+                            {% if flight.origin_timezone == "Pacific/Auckland" %}
+                                (NZ Time)
+                            {% elif flight.origin_timezone == "Australia/Melbourne" %}
+                                (Melbourne Time)
+                            {% elif flight.origin_timezone == "Pacific/Chatham" %}
+                                (Chatham Time)
+                            {% endif %}
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Arrival:</strong> {{ flight.arrival_time|time:"g:i a"|cut:"." }}
+                        {% if flight.is_international %}
+                            {% if flight.destination_timezone == "Pacific/Auckland" %}
+                                (NZ Time)
+                            {% elif flight.destination_timezone == "Australia/Melbourne" %}
+                                (Melbourne Time)
+                            {% elif flight.destination_timezone == "Pacific/Chatham" %}
+                                (Chatham Time)
+                            {% endif %}
+                        {% endif %}
+                    </p>
+
+                    <p><strong>Duration:</strong> {{ flight.get_duration }}</p>
+                    <p><strong>Aircraft:</strong> {{ flight.aircraft.name }}</p>
+                    <p><strong>Seats Left:</strong> {{ flight.seats_available }}</p>
+
+                    <a href="{% url 'book_flight' flight.id %}" class="btn">Book</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif request.GET.start_date and request.GET.end_date and request.GET.from_airport and request.GET.to_airport and not flights %}
+        <div class="card">
+            <p>No flights found matching your search.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% load booking_extras %}
+{% block body_class %}book-flight-page{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'booking/styles.css' %}">
+
+<div class="page-content">
+    <h1>Book Your Flights Today!</h1>
+
+    <div class="card">
+        <p><strong>{{ airport_names|get_item:flight.from_airport }} → {{ airport_names|get_item:flight.to_airport }}</strong></p>
+        <p><strong>Date:</strong> {{ flight.date|date:"F j, Y" }}</p>
+        <p><strong>Departure:</strong> {{ flight.departure_time|time:"g:i a"|cut:"." }}
+            {% if flight.is_international %}
+                {% if flight.origin_timezone == "Pacific/Auckland" %}(NZ Time)
+                {% elif flight.origin_timezone == "Australia/Melbourne" %}(Melbourne Time)
+                {% elif flight.origin_timezone == "Pacific/Chatham" %}(Chatham Time)
+                {% endif %}
+            {% endif %}
+        </p>
+
+        <p><strong>Arrival:</strong> {{ flight.arrival_time|time:"g:i a"|cut:"." }}
+            {% if flight.is_international %}
+                {% if flight.destination_timezone == "Pacific/Auckland" %}(NZ Time)
+                {% elif flight.destination_timezone == "Australia/Melbourne" %}(Melbourne Time)
+                {% elif flight.destination_timezone == "Pacific/Chatham" %}(Chatham Time)
+                {% endif %}
+            {% endif %}
+        </p>
+
+        <p><strong>Duration:</strong> {{ flight.get_duration }}</p>
+        <p><strong>Aircraft:</strong> {{ flight.aircraft.name }}</p>
+        <p><strong>Price:</strong> ${{ flight.price }}</p>
+        <p><strong>Seats Remaining:</strong> {{ flight.seats_available }}</p>
+
+        {% if error %}
+            <p style="color: red;"><strong>{{ error }}</strong></p>
+        {% endif %}
+
+        {% if not booking_confirmed and flight.seats_available > 0 %}
+            <form method="POST">
+                {% csrf_token %}
+                <label for="passenger_name">Full Name:</label>
+                <input type="text" name="passenger_name" id="passenger_name" required>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+                <button type="submit" class="btn">Confirm Booking</button>
+            </form>
+        {% elif flight.seats_available == 0 %}
+            <p style="color: red;"><strong>Sorry, this flight is fully booked</strong></p>
+        {% endif %}
+    </div>
+
+    {% if booking_confirmed and booking %}
+        <div class="confirmation-box">
+            <h2>Booking Confirmed!</h2>
+            <p><strong>Booking Reference:</strong> {{ booking_reference }}</p>
+            <p><strong>Name:</strong> {{ booking.passenger_name }}</p>
+            <p><strong>Email:</strong> {{ booking.email }}</p>
+            <p><strong>Flight Number:</strong> {{ flight.flight_number }}</p>
+            <p><strong>Route: {{ airport_names|get_item:flight.from_airport }} → {{ airport_names|get_item:flight.to_airport }}</strong></p>
+            <p><strong>Date:</strong> {{ flight.date|date:"F j, Y" }}</p>
+            <p><strong>Time:</strong>
+                {{ flight.departure_time|time:"g:i a"|cut:"." }}
+                {% if flight.is_international %}
+                    {% if flight.origin_timezone == "Pacific/Auckland" %}(NZ Time)
+                    {% elif flight.origin_timezone == "Australia/Melbourne" %}(Melbourne Time)
+                    {% elif flight.origin_timezone == "Pacific/Chatham" %}(Chatham Time)
+                    {% endif %}
+                {% endif %}
+                →
+                {{ flight.arrival_time|time:"g:i a"|cut:"." }}
+                {% if flight.is_international %}
+                    {% if flight.destination_timezone == "Pacific/Auckland" %}(NZ Time)
+                    {% elif flight.destination_timezone == "Australia/Melbourne" %}(Melbourne Time)
+                    {% elif flight.destination_timezone == "Pacific/Chatham" %}(Chatham Time)
+                    {% endif %}
+                {% endif %}
+            </p>
+            <p><strong>Duration:</strong> {{ flight.get_duration }}</p>
+            <p><strong>Aircraft:</strong> {{ flight.aircraft.name }}</p>
+            <p><strong>Price:</strong> ${{ flight.price }}</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dairy Flat Airline</title>
+    <link rel="stylesheet" href="{% static 'booking/styles.css' %}">
+</head>
+<body class="{% block body_class %}default-body{% endblock %}">
+
+    <div class="navbar">
+        <a href="{% url 'landing_page' %}">Home</a>
+        <a href="{% url 'view_bookings' %}">Manage Bookings</a>
+    </div>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="{% static 'booking/doit.js' %}"></script>
+</body>
+</html>
